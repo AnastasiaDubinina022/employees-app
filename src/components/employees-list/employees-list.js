@@ -2,7 +2,7 @@ import EmployeesListItem from '../employees-list-item/employees-list-item';
 
 import './employees-list.css'
 
-const EmployeesList = ({data}) => {
+const EmployeesList = ({data, onDelete}) => {
 
     const elements = data.map(item => {      // динамически формируем элементы на основе массива с объектами из бд
         // return <EmployeesListItem name={item.name} salary={item.salary}/>
@@ -10,7 +10,12 @@ const EmployeesList = ({data}) => {
 
         const {id, ...itemProps} = item;     // выделяем id и остальные св-ва идут в itemProps - деструктуризация по отстаточному принципу
 
-        return <EmployeesListItem key={id} {...itemProps}/>  // записываем id в пропс key, а остальные пропсы идут дальше в itemProps                                         
+        return (
+            <EmployeesListItem 
+                key={id} 
+                {...itemProps}  // записываем id в пропс key, а остальные пропсы идут дальше в itemProps
+                onDelete={() => onDelete(id)}/>                                           
+            )
     })
 
     return (
