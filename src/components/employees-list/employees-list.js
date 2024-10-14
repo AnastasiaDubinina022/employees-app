@@ -14,7 +14,8 @@ const EmployeesList = ({data, onDelete}) => {
             <EmployeesListItem 
                 key={id} 
                 {...itemProps}  // записываем id в пропс key, а остальные пропсы идут дальше в itemProps
-                onDelete={() => onDelete(id)}/>                                           
+                onDelete={() => onDelete(id)}
+                />                                           
             )
     })
 
