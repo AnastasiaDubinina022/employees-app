@@ -19,8 +19,9 @@ class EmployeesAddForm extends Component {
 
     onSubmit = (e) => {
         e.preventDefault();
-        this.props.onAdd(this.state.name, this.state.salary);   // при отправке формы передаем значения из стэйта в метод родителя
-        this.setState({                  // очищаем стэйт ?
+        const {onAdd} = this.props;
+        onAdd(this.state.name, this.state.salary);   // при отправке формы передаем значения из стэйта в метод родителя
+        this.setState({                            // очищаем стэйт (инпуты)
             name: '',
             salary: ''
         })

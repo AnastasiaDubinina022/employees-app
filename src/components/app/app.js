@@ -13,9 +13,9 @@ class App extends Component {
         super(props);
         this.state = {
             data: [
-                {name: 'John C.', salary: 800, increase: true, id: 1},
-                {name: 'Alex M.', salary: 3000, increase: false, id: 2},
-                {name: 'Carl W.', salary: 5000, increase: false, id: 3}
+                {name: 'John C.', salary: 800, increase: true, rise: false, id: 1},
+                {name: 'Alex M.', salary: 3000, increase: false, rise: true, id: 2},
+                {name: 'Carl W.', salary: 5000, increase: false, rise: false, id: 3}
             ]
         };
         this.maxId = 4;
@@ -43,6 +43,7 @@ class App extends Component {
             name,
             salary,
             increase: false,
+            rise: false,
             id: this.maxId++
         }
 
@@ -55,10 +56,68 @@ class App extends Component {
         })
     }
 
+    // 1й рабочий вариант выдернуть откуда-то любой элемент
+    // onToggleIncrease = (id) => {
+        // this.setState(({data}) => {                                
+            // const index = data.findIndex(elem => elem.id === id);  // находим по индексу объект (элемент) на котором произошло событие в EmployeesListItem
+            //                         // далее нам нужно создать новую копию этого объекта, чтобы что-то в ней поменять не нарушая принципы иммутабельности
+            // const old = data[index];                              // промежуточная перем. для наглядности получения старого объекта на котором произошло событие
+            // const newItem = {...old, increase: !old.increase};    // создаем новую копию этого объекта с помощью деструктуризации, при этом сразу перезаписываем в нем св-во increase на противоположное тому, что было в старом объекте
+            //                         // т.е. в новый объект {...old, } после запятой мы можем добавлять новые св-ва, а если такие уже есть в ...old, то они будут перезаписаны
+            //                     // далее нужно переработать стэйт включая новый сформированный объект
+            // const newArr = [...data.slice(0, index), newItem, ...data.slice(index + 1)];  // разворачиваем старый массив до элемеента, новый элемент, старый массив после элемента
+
+            // return {
+            //     data: newArr
+            // } 
+        // })
+    // }
+
+    // 2й вариант более коротко
+    // onToggleIncrease = (id) => {
+    //     this.setState(({data}) => ({      // получаем data из стэйта и сразу ретерним новый стэйт с измененной data
+    //         data: data.map(item => {      // возвращаем новое значение data, с помощью map - проходим по массиву и возвращаем каждый элемент
+    //             if (item.id === id) {     // если элемент совпадает с нашим айди
+    //                 return {...item, increase: !item.increase}   // то из этой ветки логики возвращаем новый элемент на основе старого с измененным increase
+    //             }
+    //             return item;         // вовращаем каждый элемент 
+    //         })                // таким образом в значение data из map получаем новый массив всех элементов, включая тот новый где мы изменили св-ва
+    //     }))
+    
+    // }
+
+    // onToggleRise = (id) => {
+    //     this.setState(({data}) => ({
+    //         data: data.map(item => {
+    //             if(item.id === id) {
+    //                 return {...item, rise: !item.rise}
+    //             }
+    //             return item;
+    //         })
+    //     }))
+    // }
+
+    // вариант оптимизации, что бы в обоих методах не повторялся одинаковый код, с помощью получения дата-атрибута (prop) при клике из EmployyesListItem 
+    onToggleProp = (id, prop) => {      //  св-во rise/increase получим вторым аргументом из < EmployeesList < EmployeesListItem
+        this.setState(({data}) => ({
+            data: data.map(item => {
+                if(item.id === id) {
+                    return {...item, [prop]: !item[prop]}    // квадратные скобки чтобы не было никаких ошибок
+                }
+                return item;
+            })
+        }))
+    }
+
     render() {
+        const employees = this.state.data.length;
+        const increased = this.state.data.filter(item => item.increase).length;
+
         return (
             <div className="app">
-                <AppInfo/>
+                <AppInfo 
+                employees={employees}
+                increased={increased}/>
     
                 <div className="search-panel">
                     <SearchPanel/>
@@ -67,7 +126,9 @@ class App extends Component {
     
                 <EmployeesList 
                 data={this.state.data}      
-                onDelete={this.deleteItem}/>  
+                onDelete={this.deleteItem}
+                onToggleProp={this.onToggleProp}/>  
+
                 <EmployeesAddForm onAdd={this.addItem}/>
             </div>
         );
