@@ -15,4 +15,5 @@ code {
 /* Variables */
 :root {
   --main-color: rgb(87, 86, 86);
+  --light-color: rgb(144, 143, 143);
 }
