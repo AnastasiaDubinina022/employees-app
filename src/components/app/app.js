@@ -17,7 +17,8 @@ class App extends Component {
                 {name: 'Alex M.', salary: 3000, increase: false, rise: true, id: 2},
                 {name: 'Carl W.', salary: 5000, increase: false, rise: false, id: 3}
             ],
-            term: ''
+            term: '',
+            filter: 'all'
         };
         this.maxId = 4;
         
@@ -116,23 +117,41 @@ class App extends Component {
         }
         // если строка ввода не пуста
         return items.filter(item => {    // фильтруем массив, берем каждый отдельный элемент и возвращам только те у кого в name есть совпадения с term(ввод)
-            return item.name.indexOf(term) > -1;  // т.е. проходят эту проверку (от indexOf приходит индекс первого совпадения, если совпадений нет приходит -1)
-        })                                        // это поиск не сначала строки а во все слове
+             return item.name.indexOf(term) > -1;  // т.е. проходят эту проверку (от indexOf приходит индекс первого совпадения, если совпадений нет приходит -1)
+        })   
+                                        // это поиск не сначала строки а во все слове
     }
 
     onUpdateSearch = (term) => {   // метод просто  получает строку из поиска и переустанавлявает стэйт
-        // this.setState({
-        //     term: term
-        // })
-        this.setState({term})  // сокращенная запись объектов = {term: term}
+        this.setState({term});  // сокращенная запись объектов = {term: term}
+    }
+
+    onUpdateFilter = (filter) => {
+        this.setState({filter});
+    }
+
+    filterEmp = (items, filter) => {
+        if (filter === 'all') return items;
+
+        if (filter === 'rise') {
+            return items.filter(item => {
+                return item.rise === true;
+            })
+        }
+
+        if (filter === 'salary') {
+            return items.filter(item => {
+                return item.salary >= 1000;
+            })
+        }
     }
 
     render() {
-        const {data, term} = this.state;
+        const {data, term, filter} = this.state;
         const employees = this.state.data.length;
         const increased = this.state.data.filter(item => item.increase).length;
-        const visibleData = this.searchEmp(data, term);  // здесь массив из стэйта, отфильтрованный методом searchEmp
-
+        const visibleData = this.filterEmp((this.searchEmp(data, term)), filter);  // здесь массив из стэйта, отфильтрованный методами searchEmp и filterEmp
+        
         return (
             <div className="app">
                 <AppInfo 
@@ -141,7 +160,9 @@ class App extends Component {
     
                 <div className="search-panel">
                     <SearchPanel onUpdateSearch={this.onUpdateSearch}/>
-                    <AppFilter/>    
+                    <AppFilter 
+                    // filter={filter}
+                    onFilter={this.onUpdateFilter}/>    
                 </div>
     
                 <EmployeesList 

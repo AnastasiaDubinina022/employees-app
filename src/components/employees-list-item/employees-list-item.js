@@ -28,8 +28,8 @@ const EmployeesListItem = (props) => {
             <button 
                 type="button"
                 className="btn-cookie btn-sm "
-                onClick={onToggleProp}
-                data-toggle="increase">         {/* кнопке с печенькой добавляем событие и метод-обработчик */} 
+                onClick={onToggleProp}      
+                data-toggle="increase">         
                 <i className="fas fa-cookie"></i>
             </button>
 
