@@ -111,6 +111,10 @@ class App extends Component {
         }))
     }
 
+    onUpdateSearch = (term) => {   // метод просто  получает строку из поиска и переустанавлявает стэйт
+        this.setState({term});  // сокращенная запись объектов = {term: term}
+    }
+
     searchEmp = (items, term) => {   // берет данные из стэйта и фильтрует
         if (term.length === 0) {    // базовая проверка на пустую строку
             return items;           // возвр. все элементы - ничего не происходит
@@ -122,35 +126,37 @@ class App extends Component {
                                         // это поиск не сначала строки а во все слове
     }
 
-    onUpdateSearch = (term) => {   // метод просто  получает строку из поиска и переустанавлявает стэйт
-        this.setState({term});  // сокращенная запись объектов = {term: term}
+    filterPost = (items, filter) => {
+        switch (filter) {
+            case 'rise': 
+                return items.filter(item => item.rise);
+            case 'moreThen1000':
+                return items.filter(item => item.salary > 1000);
+            default:
+                return items;
+        }
     }
 
-    onUpdateFilter = (filter) => {
+    onFilterSelect = (filter) => {
         this.setState({filter});
     }
 
-    filterEmp = (items, filter) => {
-        if (filter === 'all') return items;
-
-        if (filter === 'rise') {
-            return items.filter(item => {
-                return item.rise === true;
-            })
-        }
-
-        if (filter === 'salary') {
-            return items.filter(item => {
-                return item.salary >= 1000;
-            })
-        }
-    }
+    // onSalaryChange = (id, salary) => {
+    //     this.setState(({data}) => ({
+    //         data: data.map(item => {
+    //                 if (id === item.id) {
+    //                     return {...item, salary: salary}
+    //                 }
+    //                 return item;
+    //         })
+    //     }))
+    // }
 
     render() {
         const {data, term, filter} = this.state;
         const employees = this.state.data.length;
         const increased = this.state.data.filter(item => item.increase).length;
-        const visibleData = this.filterEmp((this.searchEmp(data, term)), filter);  // здесь массив из стэйта, отфильтрованный методами searchEmp и filterEmp
+        const visibleData = this.filterPost((this.searchEmp(data, term)), filter);  // здесь массив из стэйта, отфильтрованный методами searchEmp и filterEmp
         
         return (
             <div className="app">
@@ -161,14 +167,16 @@ class App extends Component {
                 <div className="search-panel">
                     <SearchPanel onUpdateSearch={this.onUpdateSearch}/>
                     <AppFilter 
-                    // filter={filter}
-                    onFilter={this.onUpdateFilter}/>    
+                    filter={filter}   // фильтр сразу передаем чтобы на него можно было ориентироваться с классом активной кнопки
+                    onFilterSelect={this.onFilterSelect}/>    
                 </div>
     
                 <EmployeesList 
-                data={visibleData}      
-                onDelete={this.deleteItem}
-                onToggleProp={this.onToggleProp}/>  
+                    data={visibleData}      
+                    onDelete={this.deleteItem}
+                    onToggleProp={this.onToggleProp}
+                    // onSalaryChange={this.onSalaryChange}
+                />  
 
                 <EmployeesAddForm onAdd={this.addItem}/>
             </div>

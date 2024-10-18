@@ -6,7 +6,7 @@ class SearchPanel extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            term: ''
+            term: ''   // стэйт для того, чтобы подвязать инпут и сделать контролируемым
         }
     }
 

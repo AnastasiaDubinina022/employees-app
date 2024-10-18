@@ -16,7 +16,9 @@ const EmployeesList = ({data, onDelete, onToggleProp}) => {
                 {...itemProps}  
                 onDelete={() => onDelete(id)}
                 onToggleProp={(e) => onToggleProp(id, e.currentTarget.getAttribute('data-toggle'))}  // сюда объект события приходит автоматически при клике по ссылке на него в EmployeesListItem, из этого объекта получаем атрибут тоггл и передаем в метод вторым аргументом
-            />                                          //  e.currentTarget для того чтобы нивелировать возможные всплытия событий чтобы точно получать тот элемент который нужен
+                                                      //  e.currentTarget для того чтобы нивелировать возможные всплытия событий чтобы точно получать тот элемент который нужен
+                // onSalaryChange={(e) => onSalaryChange(id, salary)}
+            />
         )
     })
 
