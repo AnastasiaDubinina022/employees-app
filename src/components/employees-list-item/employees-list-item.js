@@ -33,7 +33,9 @@ class EmployeesListItem extends Component {
                 <span 
                     className="list-group-item-label" 
                     onClick={onToggleProp} 
-                    data-toggle="rise">{name}</span>    {/* назначаем дата-атрибут чтобы по нему определить изменившееся св-во объекта при клике, тоже и с increase - у них один общий обработчик в App*/}
+                    data-toggle="rise"
+                    // style={{fontSize: 40, color: 'red'}}  // стили в формате объекта, пиксели реакт подставляет сам, остальные ед. изм. нужно указвать строкой. 
+                    >{name}</span>    {/* назначаем дата-атрибут чтобы по нему определить изменившееся св-во объекта при клике, тоже и с increase - у них один общий обработчик в App*/}
                 <input 
                     type="text" 
                     className="list-group-item-input" 
