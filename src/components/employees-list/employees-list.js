@@ -2,7 +2,7 @@ import EmployeesListItem from '../employees-list-item/employees-list-item';
 
 import './employees-list.css'
 
-const EmployeesList = ({data, onDelete, onToggleProp}) => {
+const EmployeesList = ({data, onDelete, onToggleProp, onSalaryChange}) => {
 
     const elements = data.map(item => {      // динамически формируем элементы на основе массива с объектами из бд
         // return <EmployeesListItem name={item.name} salary={item.salary}/>
@@ -16,9 +16,9 @@ const EmployeesList = ({data, onDelete, onToggleProp}) => {
                 {...itemProps}  
                 onDelete={() => onDelete(id)}
                 onToggleProp={(e) => onToggleProp(id, e.currentTarget.getAttribute('data-toggle'))}  // сюда объект события приходит автоматически при клике по ссылке на него в EmployeesListItem, из этого объекта получаем атрибут тоггл и передаем в метод вторым аргументом
-                                                      //  e.currentTarget для того чтобы нивелировать возможные всплытия событий чтобы точно получать тот элемент который нужен
-                // onSalaryChange={(e) => onSalaryChange(id, salary)}
-            />
+                                                     //  e.currentTarget для того чтобы нивелировать возможные всплытия событий чтобы точно получать тот элемент который нужен   
+                onSalaryChange={(salary) => onSalaryChange(id, salary)}
+            /> 
         )
     })
 

@@ -141,16 +141,16 @@ class App extends Component {
         this.setState({filter});
     }
 
-    // onSalaryChange = (id, salary) => {
-    //     this.setState(({data}) => ({
-    //         data: data.map(item => {
-    //                 if (id === item.id) {
-    //                     return {...item, salary: salary}
-    //                 }
-    //                 return item;
-    //         })
-    //     }))
-    // }
+    onSalaryChange = (id, salary) => {
+        this.setState(({data}) => ({
+            data: data.map(item => {
+                    if (id === item.id) {
+                        return {...item, salary: salary}
+                    }
+                    return item;
+            })
+        }))  // пока только в стейте меняются данные, "бд" не трогается, при перезапуске снова дефолтные значения 
+    }
 
     render() {
         const {data, term, filter} = this.state;
@@ -175,7 +175,7 @@ class App extends Component {
                     data={visibleData}      
                     onDelete={this.deleteItem}
                     onToggleProp={this.onToggleProp}
-                    // onSalaryChange={this.onSalaryChange}
+                    onSalaryChange={this.onSalaryChange}
                 />  
 
                 <EmployeesAddForm onAdd={this.addItem}/>
