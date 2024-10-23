@@ -4,13 +4,11 @@ import { Component } from 'react';
 import './employees-add-form.scss';
 
 class EmployeesAddForm extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            name: '',
-            salary: '',
-            errorMessage: ''
-        }
+    
+    state = {       // создаем стэйт без конструктора, удобно когда создаем много свойств
+        name: '',
+        salary: '',
+        errorMessage: ''
     }
 
     onValueChange = (e) => {
@@ -41,6 +39,12 @@ class EmployeesAddForm extends Component {
             errorMessage: ''
         })
     }
+
+    static onLog = () => {    // пример статического метода, см ниже
+        console.log('Hey');
+    }
+
+    static logger = 'On';    // пример статического св-ва, которое должно быть для целого класса.
 
     render() {
         const {name, salary, errorMessage} = this.state;
@@ -76,5 +80,8 @@ class EmployeesAddForm extends Component {
         );
     }
 }
+
+EmployeesAddForm.onLog();    // прямо на классе вызываем его статический метод без создания экземпляра
+console.log(EmployeesAddForm.logger);   // проверяем что св-во выводится, работает
 
 export default EmployeesAddForm;
